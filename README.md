@@ -3,6 +3,7 @@
 After a few years of three.js, I wanted to dive deeper. This was my first attempts at raw webgl.
 A from-scratch WebGL cube with model/view/projection matrices, no libraries.
 
+[Demo](https://webgl-spinning-cube.pages.dev/)
 ![Demo](./demo.gif)
 
 - Raw WebGL setup (shaders, buffers, attributes, uniforms)
