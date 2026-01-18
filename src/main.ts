@@ -119,9 +119,9 @@ class WebGLBox {
     this.fragment
   );
 
-  transforms!: { model: number[]; projection: number[]; view: number[] };
-  locations!: { position: number; color: number; model: WebGLUniformLocation | null; projection: WebGLUniformLocation | null; view: WebGLUniformLocation | null };
-  buffers!: ReturnType<typeof createBuffersForCube>;
+  transforms: { model: number[]; projection: number[]; view: number[] } = {} as any;
+  locations: { position: number; color: number; model: WebGLUniformLocation | null; projection: WebGLUniformLocation | null; view: WebGLUniformLocation | null } = {} as any;
+  buffers: ReturnType<typeof createBuffersForCube> = {} as any;
 
   constructor() {
     const gl = this.gl;
