@@ -1,4 +1,4 @@
-export const cartesianToHomogeneous = (point) => {
+export const cartesianToHomogeneous = (point: number[]) => {
   let x = point[0];
   let y = point[1];
   let z = point[2];
@@ -6,7 +6,7 @@ export const cartesianToHomogeneous = (point) => {
   return [x, y, z, 1];
 };
 
-export const homogeneousToCartesian = (point) => {
+export const homogeneousToCartesian = (point: number[]) => {
   let x = point[0];
   let y = point[1];
   let z = point[2];
@@ -15,7 +15,7 @@ export const homogeneousToCartesian = (point) => {
   return [x / w, y / w, z / w];
 };
 
-export function computeModelMatrix(now) {
+export function computeModelMatrix(this: { transforms: { model: number[] } }, now: number) {
   // Scale down by 20%
   const scaleMatrix = scale(0.2, 0.2, 0.2);
   // Rotate a slight tilt
@@ -33,7 +33,7 @@ export function computeModelMatrix(now) {
   ]);
 }
 
-export function multiplyMatrixAndPoint(matrix, point) {
+export function multiplyMatrixAndPoint(matrix: number[], point: number[]) {
   // Give a simple variable name to each part of the matrix, a column and row number
   const c0r0 = matrix[0],
     c1r0 = matrix[1],
@@ -73,7 +73,7 @@ export function multiplyMatrixAndPoint(matrix, point) {
   return [resultX, resultY, resultZ, resultW];
 }
 
-export function multiplyMatrices(matrixA, matrixB) {
+export function multiplyMatrices(matrixA: number[], matrixB: number[]) {
   // Slice the second matrix up into rows
   const row0 = [matrixB[0], matrixB[1], matrixB[2], matrixB[3]];
   const row1 = [matrixB[4], matrixB[5], matrixB[6], matrixB[7]];
@@ -96,14 +96,14 @@ export function multiplyMatrices(matrixA, matrixB) {
   ];
 }
 
-export function multiplyArrayOfMatrices(matrices) {
+export function multiplyArrayOfMatrices(matrices: number[][]) {
   if (matrices.length === 1) {
     return matrices[0];
   }
   return matrices.reduce((result, matrix) => multiplyMatrices(result, matrix));
 }
 
-export function translate(x, y, z) {
+export function translate(x: number, y: number, z: number) {
   // prettier-ignore
   return [
     1, 0, 0, 0,
@@ -113,7 +113,7 @@ export function translate(x, y, z) {
   ];
 }
 
-export function scale(x, y, z) {
+export function scale(x: number, y: number, z: number) {
   // prettier-ignore
   return [
     x, 0, 0, 0,
@@ -126,7 +126,7 @@ export function scale(x, y, z) {
 const sin = Math.sin;
 const cos = Math.cos;
 
-export function rotateX(a) {
+export function rotateX(a: number) {
   // prettier-ignore
   return [
     1, 0, 0, 0,
@@ -136,7 +136,7 @@ export function rotateX(a) {
   ];
 }
 
-export function rotateY(a) {
+export function rotateY(a: number) {
   // prettier-ignore
   return [
     cos(a), 0, sin(a), 0,
@@ -146,7 +146,7 @@ export function rotateY(a) {
   ];
 }
 
-export function rotateZ(a) {
+export function rotateZ(a: number) {
   // prettier-ignore
   return [
     cos(a), -sin(a), 0, 0,
@@ -156,7 +156,7 @@ export function rotateZ(a) {
   ];
 }
 
-export function perspective(fieldOfViewInRadians, aspectRatio, near, far) {
+export function perspective(fieldOfViewInRadians: number, aspectRatio: number, near: number, far: number) {
   const f = 1.0 / Math.tan(fieldOfViewInRadians / 2);
   const rangeInv = 1 / (near - far);
 
@@ -169,7 +169,7 @@ export function perspective(fieldOfViewInRadians, aspectRatio, near, far) {
   ];
 }
 
-export function lookAt(eye, target, up) {
+export function lookAt(eye: number[], target: number[], up: number[]) {
   const zAxis = normalize(subtract(eye, target));
   const xAxis = normalize(cross(up, zAxis));
   const yAxis = cross(zAxis, xAxis);
@@ -183,15 +183,15 @@ export function lookAt(eye, target, up) {
   ];
 }
 
-function subtract(a, b) {
+function subtract(a: number[], b: number[]) {
   return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 }
 
-function dot(a, b) {
+function dot(a: number[], b: number[]) {
   return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 }
 
-function cross(a, b) {
+function cross(a: number[], b: number[]) {
   return [
     a[1] * b[2] - a[2] * b[1],
     a[2] * b[0] - a[0] * b[2],
@@ -199,7 +199,7 @@ function cross(a, b) {
   ];
 }
 
-function normalize(v) {
+function normalize(v: number[]) {
   const len = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
   if (len === 0) return [0, 0, 0];
   return [v[0] / len, v[1] / len, v[2] / len];

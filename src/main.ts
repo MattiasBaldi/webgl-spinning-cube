@@ -1,6 +1,6 @@
 import * as M from "./utils/math/utils.js";
 import * as Utils from "./utils/utils.js";
-import { gl, canvas } from "./gl.js";
+import { gl as glContext, canvas } from "./gl.js";
 
 // Define the data that is needed to make a 3d cube
 function createCubeData() {
@@ -21,7 +21,7 @@ function createCubeData() {
   ];
 
   // prettier-ignore
-  const colorsOfFaces = [
+  const colorsOfFaces: number[][] = [
     [0.3, 1.0, 1.0, 1.0],    // Front face: cyan
     [1.0, 0.3, 0.3, 1.0],    // Back face: red
     [0.3, 1.0, 0.3, 1.0],    // Top face: green
@@ -30,7 +30,7 @@ function createCubeData() {
     [1.0, 0.3, 1.0, 1.0]     // Left face: purple
   ];
 
-  let colors = [];
+  let colors: number[] = [];
 
   for (const polygonColor of colorsOfFaces) {
     for (let i = 0; i < 4; i++) {
@@ -53,7 +53,7 @@ function createCubeData() {
 
 // Take the data for a cube and bind the buffers for it.
 // Return an object collection of the buffers
-const createBuffersForCube = (gl, cube) => {
+const createBuffersForCube = (gl: WebGL2RenderingContext, cube: ReturnType<typeof createCubeData>) => {
   const positions = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positions);
   gl.bufferData(
@@ -78,8 +78,8 @@ const createBuffersForCube = (gl, cube) => {
 };
 
 class WebGLBox {
-  canvas = canvas;
-  gl = gl;
+  canvas: HTMLCanvasElement = canvas;
+  gl: WebGL2RenderingContext = glContext;
 
   vertex = `
   // Each point has a position and color
@@ -119,9 +119,9 @@ class WebGLBox {
     this.fragment
   );
 
-  transforms = {};
-  locations = {};
-  buffers;
+  transforms!: { model: number[]; projection: number[]; view: number[] };
+  locations!: { position: number; color: number; model: WebGLUniformLocation | null; projection: WebGLUniformLocation | null; view: WebGLUniformLocation | null };
+  buffers!: ReturnType<typeof createBuffersForCube>;
 
   constructor() {
     const gl = this.gl;
@@ -151,7 +151,7 @@ class WebGLBox {
     gl.enable(gl.DEPTH_TEST);
   }
 
-  computeModelMatrix(now) {
+  computeModelMatrix(now: number) {
     const time = now;
     // Scale down by 20%
     const scaleMatrix = M.scale(5, 5, 5);
@@ -174,7 +174,7 @@ class WebGLBox {
     // over performance.
   }
 
-  computeSimpleProjectionMatrix(scaleFactor) {
+  computeSimpleProjectionMatrix(scaleFactor: number) {
     //prettier-ignore
     this.transforms.projection = [
       1, 0, 0, 0, 
@@ -198,7 +198,7 @@ class WebGLBox {
     );
   }
 
-  computeViewMatrix(now) {
+  computeViewMatrix(now: number) {
     const time = now * 0.001;
     const radius = 40;
 

@@ -1,5 +1,5 @@
-const canvas = document.getElementById("webgl");
-const gl = canvas.getContext("webgl2");
+const canvas = document.getElementById("webgl") as HTMLCanvasElement;
+const gl = canvas.getContext("webgl2") as WebGL2RenderingContext;
 
 // resizing
 const setSize = () => {

@@ -4,7 +4,7 @@ export const createShader = (
   type: number
 ) => {
   // Compiles either a shader of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
-  const shader = gl.createShader(type);
+  const shader = gl.createShader(type)!;
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
 
@@ -21,7 +21,7 @@ export const linkProgram = (
   vertexShader: WebGLShader,
   fragmentShader: WebGLShader
 ) => {
-  const program = gl.createProgram();
+  const program = gl.createProgram()!;
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragmentShader);
   gl.linkProgram(program);
